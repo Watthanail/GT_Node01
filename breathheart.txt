@@ -1,0 +1,23 @@
+#include "Arduino.h"
+#include <60ghzbreathheart.h>
+#include <HardwareSerial.h>
+HardwareSerial MySerial(0);   //Create a new HardwareSerial class -- D6/D7
+// HardwareSerial MySerial(1);
+BreathHeart_60GHz radar = BreathHeart_60GHz(&MySerial);
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(115200);
+  MySerial.begin(115200, SERIAL_8N1, -1, -1); // at CPU Freq is 40MHz, work half speed of defined.
+  while(!Serial);   //When the serial port is opened, the program starts to execute.
+  Serial.println("Ready");
+}
+
+void loop()
+{
+  // put your main code here, to run repeatedly:
+  radar.recvRadarBytes();           //Receive radar data and start processing
+  radar.showData();                 //Serial port prints a set of received data frames
+  delay(200);                       //Add time delay to avoid program jam
+}
+
+
